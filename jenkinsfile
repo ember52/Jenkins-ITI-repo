@@ -1,11 +1,6 @@
 pipeline {
     agent any
     stages {
-        stage('Clone Repository') {
-            steps {
-                git credentialsId: 'Ember-GHUB	', url: 'https://github.com/ember52/Jenkins-ITI-repo.git', branch: 'main'
-            }
-        }
         stage('List Files') {
             steps {
                 sh 'ls'
