@@ -64,7 +64,7 @@ pipeline {
                         sh "terraform workspace select ${params.ENVIRONMENT}"
                         sh "terraform init"
                         sh "terraform plan -var-file=${tfvarsFile}"
-                        // sh "terraform apply -auto-approve -var-file=${tfvarsFile}"
+                        sh "terraform apply -auto-approve -var-file=${tfvarsFile}"
                     }
                 }
             }
