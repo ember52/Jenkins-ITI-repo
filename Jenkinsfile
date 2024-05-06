@@ -12,17 +12,17 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/ember52/Jenkins-ITI-repo'
+                git branch: 'main', url: 'https://github.com/ember52/Jenkins-ITI-repo/tree/main/Terraform_code'
             }
         }
         
         stage('Navigate to Terraform Code Directory') {
             steps {
                 script {
-                    dir('Terraform_code') {
+                    // dir('Terraform_code') {
                         sh 'ls -la' // Example command to list files in Terraform_code directory
                         sh "terraform init"
-                    }
+                    // }
                 }
             }
         }
@@ -30,14 +30,14 @@ pipeline {
         stage('Validate Workspace Existence') {
             steps {
                 script {
-                    dir('Terraform_code') {
+                    // dir('Terraform_code') {
                         def workspaceStatus = sh(script: "terraform workspace list | grep ${params.ENVIRONMENT}", returnStatus: true)
 
                         if (workspaceStatus != 0) {
                             echo "Workspace '${params.ENVIRONMENT}' does not exist. Creating..."
                             sh "terraform workspace new ${params.ENVIRONMENT}"
                         }
-                    }
+                    // }
                 }
             }
         }
@@ -60,13 +60,13 @@ pipeline {
                     }
 
                     // Select Terraform workspace and run Terraform commands with selected tfvars file
-                    dir('Terraform_code') {
+                    // dir('Terraform_code') {
                         sh "terraform state list"
                         sh "terraform workspace select ${params.ENVIRONMENT}"
                         sh "terraform init"
                         sh "terraform plan -var-file=${tfvarsFile}"
                         // sh "terraform apply -auto-approve -var-file=${tfvarsFile}"
-                    }
+                    // }
                 }
             }
         }
