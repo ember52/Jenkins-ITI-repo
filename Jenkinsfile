@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/ember52/Jenkins-ITI-repo/tree/main/Terraform_code'
+                git https://github.com/ember52/Jenkins-ITI-repo/tree/main/Terraform_code
             }
         }
         
