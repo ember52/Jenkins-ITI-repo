@@ -61,7 +61,6 @@ pipeline {
 
                     // Select Terraform workspace and run Terraform commands with selected tfvars file
                     dir('Terraform_code') {
-                        sh "terraform state list"
                         sh "terraform workspace select ${params.ENVIRONMENT}"
                         sh "terraform init"
                         sh "terraform plan -var-file=${tfvarsFile}"
