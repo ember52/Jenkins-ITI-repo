@@ -1,0 +1,46 @@
+---
+- hosts: private_instance
+  name: aws slave playbook
+  remote_user: ubuntu
+  gather_facts: false
+  become: yes
+  tasks:
+    - name: Update apt package cache
+      apt:
+        update_cache: yes
+
+    - name: Install Java 11
+      package:
+        name: openjdk-11-jdk
+        state: present
+
+    - name: Install Docker dependencies
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg-agent
+          - software-properties-common
+        state: present
+
+    - name: Add Docker Repository Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
+        state: present
+
+    - name: Install Docker
+      apt:
+        name: docker-ce
+        state: present
+
+    - name: Add user 'ubuntu' to the 'docker' group
+      user:
+        name: ubuntu
+        groups: docker
+        append: yes

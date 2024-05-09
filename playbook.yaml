@@ -1,0 +1,30 @@
+---
+- hosts: private_instance
+  name: aws slave playbook
+  remote_user: ubuntu
+  gather_facts: false
+  become: yes
+  tasks:
+    - name: Update apt package cache
+      apt:
+        update_cache: yes
+
+    - name: Install Java 11
+      package:
+        name: openjdk-11-jdk
+        state: present
+
+    - name: Install Terraform using Snap
+      snap:
+        name: terraform
+        classic: yes
+        state: present
+        channel: latest
+
+
+    - name: Verify Terraform installation
+      command: terraform --version
+      register: terraform_version
+
+    - debug:
+        msg: "Terraform version is {{ terraform_version.stdout }}"
