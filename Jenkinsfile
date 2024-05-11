@@ -3,6 +3,11 @@ pipeline {
     
     parameters {
         choice(
+            name: 'ACTION',
+            choices: ['build', 'destroy'],
+            description: 'Select the action (build or destroy)'
+        )
+        choice(
             name: 'ENVIRONMENT',
             choices: ['dev', 'prod'],
             description: 'Select the environment (dev or prod)'
@@ -63,8 +68,19 @@ pipeline {
                     dir('Terraform_code') {
                         sh "terraform workspace select ${params.ENVIRONMENT}"
                         sh "terraform init"
-                        sh "terraform plan -var-file=${tfvarsFile}"
-                        // sh "terraform apply -auto-approve -var-file=${tfvarsFile}"
+                        
+                        // Perform actions based on selected action
+                        switch(params.ACTION) {
+                            case 'build':
+                                sh "terraform plan -var-file=${tfvarsFile}"
+                                sh "terraform apply -auto-approve -var-file=${tfvarsFile}"
+                                break
+                            case 'destroy':
+                                sh "terraform destroy -var-file=${tfvarsFile}"
+                                break
+                            default:
+                                error "Invalid action selected"
+                        }
                     }
                 }
             }
