@@ -1,8 +1,11 @@
-[node]
+[first_slave_node]
+<public-ip>
+
+[second_private_slave_node]
 <private-ip>
 
 
-[node:vars]
+[second_private_slave_node:vars]
 ansible_user = ubuntu
 ansible_ssh_private_key_file = <private-key>
 ansible_ssh_common_args = "-o ProxyCommand=\"ssh -i <private-key> ubuntu@<public-ip>  -W %h:%p\""  
