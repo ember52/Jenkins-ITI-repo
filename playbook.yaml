@@ -1,5 +1,5 @@
 ---
-- hosts: private_instance
+- hosts: first_slave_node
   name: aws slave playbook
   remote_user: ubuntu
   gather_facts: false
